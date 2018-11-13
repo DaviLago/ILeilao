@@ -11,7 +11,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cce_teste11.ileilao.DAO.UserDao;
+import com.example.cce_teste11.ileilao.Model.UserModel;
+
 public class SignInActivity extends AppCompatActivity {
+
+    //User Dao
+    UserDao user_dao;
 
     private EditText email, password;
     private TextView register;
@@ -24,6 +30,9 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
+
+        //DAO Instance
+        user_dao = new UserDao(SignInActivity.this);
 
         //Cadastrar Link para a página de cadastro
         register = (TextView) findViewById(R.id.register);
@@ -50,7 +59,14 @@ public class SignInActivity extends AppCompatActivity {
                 String emailTxt = email.getText().toString();
                 String passwordTxt = password.getText().toString();
                 String userTypeTxt = dropdown.getSelectedItem().toString();
-                Toast.makeText(SignInActivity.this, "ok", Toast.LENGTH_SHORT).show();
+                Boolean result = user_dao.login(getUserModelToLogin());
+                Toast.makeText(SignInActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
+                if(result){
+                    openCreateProdsActivity();
+                }
+                else {
+                    Toast.makeText(SignInActivity.this, "Email ou senha inválidos", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -67,6 +83,17 @@ public class SignInActivity extends AppCompatActivity {
     private void openSignUpActivity(){
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(intent);
+    }
+
+    private void openCreateProdsActivity(){
+        Intent intent = new Intent(SignInActivity.this, CreateProdActivity.class);
+        startActivity(intent);
+    }
+
+    public UserModel getUserModelToLogin(){
+        return new UserModel(email.getText().toString(),
+                password.getText().toString(),
+                dropdown.getSelectedItem().toString());
     }
 
 }

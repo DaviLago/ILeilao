@@ -9,7 +9,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.cce_teste11.ileilao.DataBaseSQLite.DataBaseHelper;
+import com.example.cce_teste11.ileilao.DAO.UserDao;
+import com.example.cce_teste11.ileilao.Model.UserModel;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -19,16 +20,16 @@ public class SignUpActivity extends AppCompatActivity {
     //Dropdown com os tipos de usuário
     private Spinner dropdown;
 
-    //DataBase Instance
-    DataBaseHelper db;
+    //User DAO
+    UserDao user_dao;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        //Creating DataBase Object
-        db = new DataBaseHelper(SignUpActivity.this);
+        //DAO Instance
+        user_dao = new UserDao(SignUpActivity.this);
 
         name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
@@ -38,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Boolean result = db.insertUser(getUserModel());
+                Boolean result = user_dao.insertUser(getUserModel());
                 if(result == false)
                     Toast.makeText(SignUpActivity.this, "Erro ao inserir novo usuário", Toast.LENGTH_SHORT).show();
                 else
