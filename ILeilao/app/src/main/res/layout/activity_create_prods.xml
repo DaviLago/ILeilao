@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".SignUpActivity">
+    tools:context=".SignInActivity">
 
     <include
         android:id="@+id/simple_toolbar"
         layout="@layout/toolbar_layout_simple" />
 
     <ScrollView
-        android:id="@+id/sign_up_form"
+        android:id="@+id/prod_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
@@ -20,9 +20,9 @@
         android:layout_marginRight="16dp">
 
         <LinearLayout
-            android:id="@+id/email_login_form"
+            android:id="@+id/prod_layout_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
@@ -33,7 +33,6 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Nome"
@@ -42,46 +41,51 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_marginTop="14dp">
 
                 <EditText
-                    android:id="@+id/email"
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Descrição"
+                    android:inputType="textMultiLine" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:layout_marginTop="14dp">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/seller_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Senha"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Email vendedor"
+                    android:inputType="textPersonName" />
 
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinner"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="14dp">
+
+                <EditText
+                    android:id="@+id/seller_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Senha vendedor"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/register_btn"
@@ -94,6 +98,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

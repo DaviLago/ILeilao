@@ -3,6 +3,10 @@
     <string name="activity_sign_in_title">ILeilao</string>
     <string name="activity_sign_up_title">ILeilao</string>
     <string name="activity_create_prods_title">ILeilao</string>
+    <string name="activity_product_list">ILeilao</string>
+    <string name="activity_sale_list">ILeilao</string>
+    <string name="activity_product_detail">ILeilao</string>
+    <string name="activity_create_sale">ILeilao</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

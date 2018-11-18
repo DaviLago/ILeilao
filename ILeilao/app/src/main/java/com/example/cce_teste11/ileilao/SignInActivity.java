@@ -20,22 +20,24 @@ public class SignInActivity extends AppCompatActivity {
     UserDao user_dao;
 
     private EditText email, password;
-    private TextView register;
-    private Button signInBtn;
+    protected TextView register;
+    protected Button signInBtn;
     private Spinner dropdown;
+
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
+        email = findViewById(R.id.email);
+        password = findViewById(R.id.password);
 
         //DAO Instance
         user_dao = new UserDao(SignInActivity.this);
 
         //Cadastrar Link para a página de cadastro
-        register = (TextView) findViewById(R.id.register);
+        register = findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -45,24 +47,20 @@ public class SignInActivity extends AppCompatActivity {
         //----
 
         //DropDown User Types - Participante ou Leiloeiro
-        dropdown = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SignInActivity.this, android.R.layout.simple_list_item_1,
+        dropdown = findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(SignInActivity.this, android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.user_types));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
         //-----
 
-        signInBtn = (Button) findViewById(R.id.login_btn);
+        signInBtn = findViewById(R.id.login_btn);
         signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String emailTxt = email.getText().toString();
-                String passwordTxt = password.getText().toString();
-                String userTypeTxt = dropdown.getSelectedItem().toString();
                 Boolean result = user_dao.login(getUserModelToLogin());
-                Toast.makeText(SignInActivity.this, result.toString(), Toast.LENGTH_SHORT).show();
                 if(result){
-                    openCreateProdsActivity();
+                    openSaleListActivity();
                 }
                 else {
                     Toast.makeText(SignInActivity.this, "Email ou senha inválidos", Toast.LENGTH_SHORT).show();
@@ -86,7 +84,17 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void openCreateProdsActivity(){
-        Intent intent = new Intent(SignInActivity.this, CreateProdActivity.class);
+        intent = new Intent(SignInActivity.this, CreateProdActivity.class);
+        startActivity(intent);
+    }
+
+    private void openProductListActivity(){
+        intent = new Intent(SignInActivity.this, ProductListActivity.class);
+        startActivity(intent);
+    }
+
+    private void openSaleListActivity(){
+        intent = new Intent(SignInActivity.this, SaleListActivity.class);
         startActivity(intent);
     }
 

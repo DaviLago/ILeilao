@@ -1,5 +1,7 @@
 package com.example.cce_teste11.ileilao;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -42,8 +44,16 @@ public class SignUpActivity extends AppCompatActivity {
                 Boolean result = user_dao.insertUser(getUserModel());
                 if(result == false)
                     Toast.makeText(SignUpActivity.this, "Erro ao inserir novo usuário", Toast.LENGTH_SHORT).show();
-                else
+                else {
                     Toast.makeText(SignUpActivity.this, "Novo usuário criado", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("user_name", getUserModel().getName());
+                    intent.putExtra("user_email", getUserModel().getEmail());
+                    intent.putExtra("user_password", getUserModel().getPassword());
+                    intent.putExtra("user_type", getUserModel().getType());
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
             }
         });
 

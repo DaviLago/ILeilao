@@ -1,5 +1,8 @@
 package com.example.cce_teste11.ileilao;
 
+import com.example.cce_teste11.ileilao.DAO.UserDao;
+import com.example.cce_teste11.ileilao.Model.UserModel;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +17,5 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
 }

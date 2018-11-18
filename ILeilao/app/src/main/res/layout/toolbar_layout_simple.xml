@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimaryDark"
+    android:elevation="4dp"
+    android:id="@+id/simple_toolbar"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:title="LEILAO">
+
+</android.support.v7.widget.Toolbar>
