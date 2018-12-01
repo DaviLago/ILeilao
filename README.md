@@ -1,2 +1,2 @@
 # Sistema de leilão virtual feito em Android Studio
-Mais informações no enunciado
+Mais informações no arquivo chamado enunciado
