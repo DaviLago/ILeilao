@@ -70,14 +70,6 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
-
     private void openSignUpActivity(){
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(intent);

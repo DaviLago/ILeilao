@@ -54,6 +54,18 @@
             android:name=".EditSaleActivity"
             android:label="@string/activity_create_sale">
         </activity>
+        <activity
+            android:name=".EditProdActivity"
+            android:label="@string/activity_create_sale">
+        </activity>
+        <activity
+            android:name=".LanceListActivity"
+            android:label="@string/activity_create_sale">
+        </activity>
+        <activity
+            android:name=".SaleWinner"
+            android:label="@string/activity_create_sale">
+        </activity>
     </application>
 
 </manifest>

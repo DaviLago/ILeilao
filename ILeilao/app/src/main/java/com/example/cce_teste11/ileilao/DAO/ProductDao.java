@@ -35,6 +35,24 @@ public class ProductDao {
         return true;
     }
 
+    public boolean update(ProductModel prod){
+        ContentValues content = new ContentValues();
+        content.put(DataBaseHelper.PROD_COL_NAME, prod.getProd_name());
+        content.put(DataBaseHelper.PROD_COL_DESCRIPTION, prod.getProd_description());
+        content.put(DataBaseHelper.PROD_COL_SELLER_ID, prod.getSeller().getEmail());
+        Integer result = db.getWritableDatabase().update(DataBaseHelper.PROD_TABLE_NAME, content,
+                DataBaseHelper.PROD_COL_ID + " = ?", new String[]{prod.getId().toString()});
+        return result > 0;
+    }
+
+    public boolean encerrar(Long prod_id){
+        ContentValues content = new ContentValues();
+        content.put(DataBaseHelper.PROD_COL_STATUS, new Boolean(false));
+        Integer result = db.getWritableDatabase().update(DataBaseHelper.PROD_TABLE_NAME, content,
+                DataBaseHelper.PROD_COL_ID + " = ?", new String[]{prod_id.toString()});
+        return result > 0;
+    }
+
     public List<ProductModel> findAllProduct(){
         Cursor cursor = db.getWritableDatabase().rawQuery( "SELECT * FROM " + DataBaseHelper.PROD_TABLE_NAME, null);
         return getProductList(cursor);

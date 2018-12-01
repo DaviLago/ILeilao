@@ -10,9 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.cce_teste11.ileilao.DAO.SaleDao;
+import com.example.cce_teste11.ileilao.Interface.ItemClickListener;
 import com.example.cce_teste11.ileilao.Model.SaleModel;
 import com.example.cce_teste11.ileilao.RecyclerViewAdapter.SaleListRecyclerView;
 
@@ -22,6 +22,7 @@ import java.util.List;
 public class SaleListActivity extends AppCompatActivity {
 
     public static final String TAG = "SaleListActivity";
+    private static final int CODE_REQUEST_RELOAD = 200;
 
     private Toolbar toolbar;
     private List<SaleModel> sales = new ArrayList<>();
@@ -42,6 +43,7 @@ public class SaleListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         //List of sales
         getSales();
+
     }
 
     @Override
@@ -55,10 +57,7 @@ public class SaleListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item1:
                 Intent intent = new Intent(SaleListActivity.this, ProductListActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.item2:
-                Toast.makeText(SaleListActivity.this, "Item 2", Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, CODE_REQUEST_RELOAD);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -73,8 +72,36 @@ public class SaleListActivity extends AppCompatActivity {
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerView.");
         SaleListRecyclerView adapter = new SaleListRecyclerView(SaleListActivity.this, sales);
+        adapter.setOnClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d(TAG, "Elemento " + position + " clicado. +++++++++++++++++++++++++");
+                Intent intent = new Intent(SaleListActivity.this, SaleDetailActivity.class);
+                intent.putExtra("prod_id", sales.get(position).getProduct().getId());
+                intent.putExtra("prod_name", sales.get(position).getProduct().getProd_name());
+                intent.putExtra("prod_description", sales.get(position).getProduct().getProd_description());
+                intent.putExtra("prod_seller", sales.get(position).getProduct().getSeller().getEmail());
+                intent.putExtra("prod_status", sales.get(position).getProduct().getStatus());
+                intent.putExtra("sale_status", sales.get(position).getStatus());
+                intent.putExtra("sale_min_value", sales.get(position).getMin_value());
+                intent.putExtra("sale_id", sales.get(position).getId());
+                startActivityForResult(intent, CODE_REQUEST_RELOAD);
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(SaleListActivity.this));
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CODE_REQUEST_RELOAD){
+            if(resultCode == RESULT_CANCELED){
+                getSales();
+            }
+        }
     }
 
 }

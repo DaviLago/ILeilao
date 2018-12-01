@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.cce_teste11.ileilao.DAO.LanceDao;
 import com.example.cce_teste11.ileilao.DAO.ProductDao;
 import com.example.cce_teste11.ileilao.DAO.SaleDao;
 import com.example.cce_teste11.ileilao.DAO.UserDao;
 import com.example.cce_teste11.ileilao.DataBaseSQLite.DataBaseHelper;
+import com.example.cce_teste11.ileilao.Model.LanceModel;
 import com.example.cce_teste11.ileilao.Model.ProductModel;
 import com.example.cce_teste11.ileilao.Model.SaleModel;
 import com.example.cce_teste11.ileilao.Model.UserModel;
@@ -22,11 +24,13 @@ public class TesteActivity extends AppCompatActivity {
     Button insert_btn, run_btn;
     UserDao userDao;
     SaleDao saleDao;
+    LanceDao lanceDao;
     ProductDao productDao;
     DataBaseHelper db;
     List<UserModel> users;
     List<ProductModel> products;
     List<SaleModel> sales;
+    List<LanceModel> lances;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class TesteActivity extends AppCompatActivity {
         userDao = new UserDao(TesteActivity.this);
         productDao = new ProductDao(TesteActivity.this);
         saleDao = new SaleDao(TesteActivity.this);
+        lanceDao = new LanceDao(TesteActivity.this);
 
         insert_btn = findViewById(R.id.insert);
         insert_btn.setOnClickListener(new View.OnClickListener(){
@@ -46,6 +51,7 @@ public class TesteActivity extends AppCompatActivity {
 //                insertTestsUser();
 //                insertTestsProduct();
 //                insertTestsSale();
+//                insertTestsLance();
             }
         });
 
@@ -54,8 +60,9 @@ public class TesteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                runTestsUser();
-                runTestsProduct();
+//                runTestsProduct();
 //                runTestsSale();
+                runTestsLance();
             }
         });
     }
@@ -173,6 +180,32 @@ public class TesteActivity extends AppCompatActivity {
         System.out.println("SALE Password: " + sales.get(0).getPassword() + " ????????");
 
         System.out.println("runTestsSale #########################################################");
+    }
+
+    private void runTestsLance(){
+        ProductModel product = productDao.findAllProduct().get(0);
+        lances = lanceDao.findAllLanceByProductId(product.getId());
+        LanceModel lance = lanceDao.getMaxValue(product.getId());
+
+        System.out.println("runTestsLance #########################################################");
+        System.out.println("LANCE Id: " + lances.get(0).getId());
+        System.out.println("LANCE VALUE: " + lances.get(0).getValue());
+        System.out.println("LANCE USER: " + lances.get(0).getUser().getEmail());
+        System.out.println("#########################################################");
+        System.out.println("LANCE Id: " + lance.getId());
+        System.out.println("LANCE MAX VALUE: " + lance.getValue());
+        System.out.println("LANCE USER: " + lance.getUser().getEmail());
+        System.out.println(lanceDao.isValidLance(new Double(13.60), product.getId()) + " TRUE or FALSE");
+        System.out.println("runTestsLance #########################################################");
+
+    }
+
+    private Boolean insertTestsLance(){
+        ProductModel product = productDao.findAllProduct().get(0);
+        UserModel user = userDao.findUserByEmail("teste@123");
+        LanceModel lance  = new LanceModel(12.5, product, user);
+        lanceDao.insert(lance);
+        return true;
     }
 
 }

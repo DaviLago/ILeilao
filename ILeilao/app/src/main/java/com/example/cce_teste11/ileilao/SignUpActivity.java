@@ -41,18 +41,23 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Boolean result = user_dao.insertUser(getUserModel());
-                if(result == false)
-                    Toast.makeText(SignUpActivity.this, "Erro ao inserir novo usuário", Toast.LENGTH_SHORT).show();
+                UserModel user = getUserModel();
+                if(user == null)
+                    Toast.makeText(SignUpActivity.this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
                 else {
-                    Toast.makeText(SignUpActivity.this, "Novo usuário criado", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent();
-                    intent.putExtra("user_name", getUserModel().getName());
-                    intent.putExtra("user_email", getUserModel().getEmail());
-                    intent.putExtra("user_password", getUserModel().getPassword());
-                    intent.putExtra("user_type", getUserModel().getType());
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
+                    Boolean result = user_dao.insertUser(user);
+                    if (result == false)
+                        Toast.makeText(SignUpActivity.this, "Erro ao inserir novo usuário", Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(SignUpActivity.this, "Novo usuário criado", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.putExtra("user_name", getUserModel().getName());
+                        intent.putExtra("user_email", getUserModel().getEmail());
+                        intent.putExtra("user_password", getUserModel().getPassword());
+                        intent.putExtra("user_type", getUserModel().getType());
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    }
                 }
             }
         });
@@ -67,6 +72,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public UserModel getUserModel(){
+        if(name.getText().toString().isEmpty() || email.getText().toString().isEmpty() || password.getText().toString().isEmpty())
+            return null;
         return new UserModel(name.getText().toString(),
                 email.getText().toString(),
                 password.getText().toString(),

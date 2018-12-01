@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.cce_teste11.ileilao.DataBaseSQLite.DataBaseHelper;
 import com.example.cce_teste11.ileilao.Model.UserModel;
 
 public class ProductDetailActivity extends AppCompatActivity {
+
+    private static final int CODE_REQUEST_EDIT = 1;
+    private static final int CODE_REQUEST_SALE = 2;
 
     TextView prod_name, prod_description, prod_seller, status, sale;
     Long prod_id, sale_id;
@@ -40,8 +42,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         sale.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                intent.setClass(ProductDetailActivity.this, CreateSaleActivity.class);
-                startActivity(intent);
+                Intent intentSale = intent;
+                intentSale.setClass(ProductDetailActivity.this, CreateSaleActivity.class);
+                startActivityForResult(intentSale, CODE_REQUEST_SALE);
             }
         });
 
@@ -66,7 +69,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
         edit_btn = findViewById(R.id.edit_btn);
-        if(UserModel.getLogged_user().getEmail().compareTo(intent.getStringExtra("prod_seller")) == 0)
+        if(prod_status && (UserModel.getLogged_user().getEmail().compareTo(intent.getStringExtra("prod_seller")) == 0 || UserModel.getLogged_user().getType().compareTo("leiloeiro") == 0))
             edit_btn.setVisibility(View.VISIBLE);
         else
             edit_btn.setVisibility(View.INVISIBLE);
@@ -74,12 +77,34 @@ public class ProductDetailActivity extends AppCompatActivity {
         edit_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO
+                Intent intentEdit = intent;
+                intentEdit.setClass(ProductDetailActivity.this, EditProdActivity.class);
+                startActivityForResult(intentEdit, CODE_REQUEST_EDIT);
             }
         });
 
-
-
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == CODE_REQUEST_EDIT){
+            if(resultCode == RESULT_OK){
+                prod_name.setText(data.getStringExtra("prod_name"));
+                intent.putExtra("prod_name", data.getStringExtra("prod_name"));
+                prod_description.setText(data.getStringExtra("prod_description"));
+                intent.putExtra("prod_description", data.getStringExtra("prod_description"));
+                prod_seller.setText(data.getStringExtra("prod_seller"));
+                intent.putExtra("prod_seller", data.getStringExtra("prod_seller"));
+            }
+        }
+        else if(requestCode == CODE_REQUEST_SALE){
+            if(resultCode == RESULT_OK){
+                status.setText("Leiloando");
+                sale.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
 }

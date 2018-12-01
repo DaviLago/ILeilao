@@ -1,7 +1,6 @@
 package com.example.cce_teste11.ileilao.RecyclerViewAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,18 +10,20 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.cce_teste11.ileilao.Interface.ItemClickListener;
 import com.example.cce_teste11.ileilao.Model.SaleModel;
 import com.example.cce_teste11.ileilao.R;
-import com.example.cce_teste11.ileilao.SaleDetailActivity;
 
 import java.util.List;
 
 public class SaleListRecyclerView extends RecyclerView.Adapter<SaleListRecyclerView.ViewHolder> {
 
+    private static final int CODE_REQUEST_EDIT = 1;
     public static final String TAG = "SaleListRecyclerVie";
 
     private List<SaleModel> sales;
     private Context context;
+    private ItemClickListener itemClickListener;
 
     public SaleListRecyclerView(Context context, List<SaleModel> sales) {
         Log.d(TAG, "ProductListRecyclerView: constructor.");
@@ -44,26 +45,6 @@ public class SaleListRecyclerView extends RecyclerView.Adapter<SaleListRecyclerV
         viewHolder.name.setText(sales.get(i).getProduct().getProd_name());
         viewHolder.description.setText(sales.get(i).getProduct().getProd_description());
         viewHolder.min_value.setText(sales.get(i).getMin_value().toString());
-
-        setSaleOnClickListener(viewHolder, i);
-    }
-
-    private void setSaleOnClickListener(@NonNull SaleListRecyclerView.ViewHolder viewHolder, final int i) {
-        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SaleDetailActivity.class);
-                intent.putExtra("prod_id", sales.get(i).getProduct().getId());
-                intent.putExtra("prod_name", sales.get(i).getProduct().getProd_name());
-                intent.putExtra("prod_description", sales.get(i).getProduct().getProd_description());
-                intent.putExtra("prod_seller", sales.get(i).getProduct().getSeller().getEmail());
-                intent.putExtra("prod_status", sales.get(i).getProduct().getStatus());
-                intent.putExtra("sale_status", sales.get(i).getStatus());
-                intent.putExtra("sale_min_value", sales.get(i).getMin_value());
-                intent.putExtra("sale_id", sales.get(i).getId());
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -71,8 +52,11 @@ public class SaleListRecyclerView extends RecyclerView.Adapter<SaleListRecyclerV
         return sales.size();
     }
 
+    public void setOnClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         RelativeLayout parentLayout;
         TextView name, description, min_value;
@@ -84,9 +68,15 @@ public class SaleListRecyclerView extends RecyclerView.Adapter<SaleListRecyclerV
             description = itemView.findViewById(R.id.description);
             min_value = itemView.findViewById(R.id.min_value);
             parentLayout = itemView.findViewById(R.id.parentLayout);
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            if(itemClickListener != null){
+                itemClickListener.onItemClick(getAdapterPosition());
+            }
         }
     }
-
 
 }

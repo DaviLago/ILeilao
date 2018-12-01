@@ -46,6 +46,14 @@ public class SaleDao {
         return result > 0;
     }
 
+    public boolean encerrar(Long sale_id){
+        ContentValues content = new ContentValues();
+        content.put(DataBaseHelper.SALE_COL_STATUS, new Boolean(false));
+        Integer result = db.getWritableDatabase().update(DataBaseHelper.SALE_TABLE_NAME, content,
+                DataBaseHelper.SALE_COL_ID + " = ?", new String[]{sale_id.toString()});
+        return result > 0;
+    }
+
     public SaleModel findSaleByProdId(Long prod_id){
         Cursor cursor = db.getWritableDatabase().rawQuery( "SELECT * FROM " + DataBaseHelper.SALE_TABLE_NAME +
                 " WHERE " + DataBaseHelper.SALE_COL_PROD_ID + " = '" + prod_id + "';", null);
@@ -60,6 +68,23 @@ public class SaleDao {
         else
             return null;
     }
+
+    public SaleModel findSaleByProdIdAndSalePassword(Long prod_id, String password){
+        Cursor cursor = db.getWritableDatabase().rawQuery( "SELECT * FROM " + DataBaseHelper.SALE_TABLE_NAME +
+                " WHERE " + DataBaseHelper.SALE_COL_PROD_ID + " = '" + prod_id + "'" +
+                " AND " + DataBaseHelper.SALE_COL_PASSWORD + " = '" + password + "';", null);
+
+        if(cursor.getCount() == 1) {
+            cursor.moveToFirst();
+            return new SaleModel(Long.parseLong(cursor.getString(0)),
+                    Double.parseDouble(cursor.getString(1)),
+                    cursor.getString(2),
+                    cursor.getString(3).compareTo("1") == 0 ? true : false);
+        }
+        else
+            return null;
+    }
+
 
     public List<SaleModel> findAllSale(){
         Cursor cursor = db.getWritableDatabase().rawQuery( "SELECT * FROM " + DataBaseHelper.SALE_TABLE_NAME, null);

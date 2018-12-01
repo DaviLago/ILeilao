@@ -34,6 +34,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public final static String PROD_COL_SELLER_ID = "seller_id";
 //    public final static String PROD_COL_SALE_ID = "sale_id";
 
+    //Lance Table -----
+    public final static String LANCE_TABLE_NAME = "lance";
+    public final static String LANCE_COL_ID = "lance_id";
+    public final static String LANCE_COL_VALUE = "value";
+    public final static String LANCE_COL_USER_ID = "user_id";
+    public final static String LANCE_COL_PROD_ID = "prod_id";
+
     // Create User Table
     public final static String CREATE_USER_TABLE = "CREATE TABLE " + USER_TABLE_NAME +
             "(" + USER_COL_EMAIL_ID + " VARCHAR(25) PRIMARY KEY, " +
@@ -66,8 +73,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //            "FOREIGN KEY (" + PROD_COL_SALE_ID + ") REFERENCES " + SALE_TABLE_NAME + "(" + SALE_COL_ID + "));";
     //-----------
 
+    // Create Lance Table
+    public final static String CREATE_LANCE_TABLE = "CREATE TABLE " + LANCE_TABLE_NAME +
+            "(" + LANCE_COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            LANCE_COL_VALUE + " DOUBLE(25, 2) NOT NULL, " +
+            LANCE_COL_PROD_ID + " INTEGER NOT NULL, " +
+            LANCE_COL_USER_ID + " VARCHAR(25) NOT NULL, " +
+            "FOREIGN KEY (" + LANCE_COL_PROD_ID + ") REFERENCES " + PROD_TABLE_NAME + "(" + PROD_COL_ID + "), " +
+            "FOREIGN KEY (" + LANCE_COL_USER_ID + ") REFERENCES " + USER_TABLE_NAME + "(" + USER_COL_EMAIL_ID + "));";
+    //-----------
+
     public DataBaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 9);
+        super(context, DATABASE_NAME, null, 13);
     }
 
     @Override
@@ -75,6 +92,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_SALE_TABLE);
         db.execSQL(CREATE_PROD_TABLE);
+        db.execSQL(CREATE_LANCE_TABLE);
     }
 
     @Override
@@ -82,6 +100,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PROD_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + SALE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LANCE_TABLE_NAME);
         onCreate(db);
     }
 

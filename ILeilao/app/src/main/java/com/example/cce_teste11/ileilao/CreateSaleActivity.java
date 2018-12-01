@@ -1,5 +1,6 @@
 package com.example.cce_teste11.ileilao;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cce_teste11.ileilao.DAO.ProductDao;
 import com.example.cce_teste11.ileilao.DAO.SaleDao;
@@ -68,8 +70,19 @@ public class CreateSaleActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                sale = new SaleModel(Double.parseDouble(min_value.getText().toString()), password.getText().toString(), new Boolean(true), new ProductModel(prod_id));
-                saleDao.insertSale(sale);
+                if(min_value.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
+                    Toast.makeText(CreateSaleActivity.this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    sale = new SaleModel(Double.parseDouble(min_value.getText().toString()), password.getText().toString(), new Boolean(true), new ProductModel(prod_id));
+                    Boolean result = saleDao.insertSale(sale);
+                    if (result) {
+                        Toast.makeText(CreateSaleActivity.this, "Leilão iniciado", Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    } else
+                        Toast.makeText(CreateSaleActivity.this, "Erro ao criar leilão", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
